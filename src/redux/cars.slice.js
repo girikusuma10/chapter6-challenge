@@ -29,17 +29,19 @@ const carsSlice= createSlice({
     filteredCars: [],
     cars: [],
     isLoading: false,
+    isFiltered: false,
     isError: false,
   },
   extraReducers: (builder)=> {
     builder.addCase(getCars.pending, (state)=> {
       state.isLoading= true;
+      state.isFiltered= false;
       state.isError= false;
+      state.filteredCars= [];
     });
 
     builder.addCase(getCars.fulfilled, (state, action)=> {
       state.isLoading= false;
-      state.filteredCars= [];
       state.cars= action.payload;
     });
 
@@ -51,6 +53,7 @@ const carsSlice= createSlice({
 
     builder.addCase(filterCars.fulfilled, (state, action)=> {
       state.filteredCars= action.payload;
+      state.isFiltered= true;
     });
 
     builder.addCase(filterCars.rejected, (state, action)=> {

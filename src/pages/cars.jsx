@@ -13,8 +13,8 @@ const CarsPage= ()=> {
   const [passanger, setPassanger]= useState(0);
 
   const memoedCars= useMemo(
-    ()=> carsData.filteredCars.length?carsData.filteredCars:carsData.cars,
-    [carsData.filteredCars, carsData.cars],
+    ()=> carsData.isFiltered?carsData.filteredCars:carsData.cars,
+    [carsData.filteredCars, carsData.cars, carsData.isFiltered],
   );
 
   const formatCurrency= (currency)=> new Intl.NumberFormat('id-ID', {
@@ -90,10 +90,19 @@ return (
         </form>
       </div>
     </div>
+
     <div className="row mt-5 mx-1">
       {
       carsData.isLoading?
       <p>Loading</p>:
+      !memoedCars.length?
+      <div className="row mx-auto">
+        <div className="col">
+          <div className="card bg-success w-80 d-flex align-items-center justify-content-center" style={{height: '100px'}}>
+            <h3 className='my-0 text-white'>Mobil tidak ditemukan</h3>
+          </div>
+        </div>
+    </div>:
       memoedCars.map((car, k)=> (
         <div className="col-4 px-3" key={k}>
           <div className="card mb-5">
